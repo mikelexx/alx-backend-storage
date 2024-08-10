@@ -17,9 +17,11 @@ BEGIN
 	DECLARE done INT;
 	DECLARE avg_score_user_id INT;
 	DECLARE score_cursor CURSOR FOR SELECT corrections.user_id, SUM(corrections.score * weight) / SUM(weight) FROM corrections
-	LEFT JOIN projects
+	INNER JOIN projects
 	ON corrections.project_id = projects.id
+	WHERE corrections.user_id = user_id
 	GROUP BY corrections.user_id;
+
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 	OPEN score_cursor;
 	read_avg_scores: LOOP

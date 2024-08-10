@@ -13,7 +13,7 @@ CREATE
 DEFINER = CURRENT_USER
 PROCEDURE ComputeAverageWeightedScoreForUser(user_id INT)
 BEGIN
-	DECLARE average_score INT;
+	DECLARE average_score FLOAT;
 	DECLARE done INT;
 	DECLARE avg_score_user_id INT;
 	DECLARE score_cursor CURSOR FOR SELECT corrections.user_id, SUM(corrections.score * weight) / SUM(weight) FROM corrections

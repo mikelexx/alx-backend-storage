@@ -17,7 +17,6 @@ def list_all(mongo_collection: Collection) -> Union[Cursor, List]:
     lists all documents in a collection
     """
     cursor = mongo_collection.find()
-    print(type(cursor))
     if cursor.count() == 0:
         return []
     else:

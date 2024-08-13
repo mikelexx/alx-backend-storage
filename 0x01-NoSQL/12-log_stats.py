@@ -15,21 +15,22 @@ one line with the number of documents with:
 method=GET
 path=/status
 """
-from pymongo import MongoClient
+if __name__ == '__main__':
+    from pymongo import MongoClient
 
-client = MongoClient()
-db = client.logs
-collection = db.nginx
-rows = collection.find()
-print("{} logs".format(rows.count()))
-print("Methods:")
-for method in ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']:
-    print("\tmethod {}: {}".format(method,
-                                   collection.find({
-                                       "method": method
-                                   }).count()))
-print("{} status check".format(
-    collection.find({
-        "method": 'GET',
-        'path': '/status'
-    }).count()))
+    client = MongoClient()
+    db = client.logs
+    collection = db.nginx
+    rows = collection.find()
+    print("{} logs".format(rows.count()))
+    print("Methods:")
+    for method in ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']:
+        print("\tmethod {}: {}".format(method,
+                                       collection.find({
+                                           "method": method
+                                       }).count()))
+    print("{} status check".format(
+        collection.find({
+            "method": 'GET',
+            'path': '/status'
+        }).count()))

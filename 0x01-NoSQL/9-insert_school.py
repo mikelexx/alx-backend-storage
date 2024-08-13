@@ -7,11 +7,9 @@ a collection based on kwargs:
     mongo_collection will be the pymongo collection object
     Returns the new _id
 """
-from typing import Any
-from pymongo.collection import Collection
 
 
-def insert_school(mongo_collection: Collection, **kwargs: dict) -> Any:
+def insert_school(mongo_collection, **kwargs):
     """
     inserts a new document in a collection based on kwargs
     """

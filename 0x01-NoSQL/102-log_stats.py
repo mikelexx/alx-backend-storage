@@ -46,3 +46,5 @@ for row in collection.aggregate([{
         '$limit': 10
 }]):
     print(row.get('ip'))
+if __name__ == '__main__':
+    exit()

@@ -36,7 +36,6 @@ if __name__ == '__main__':
     }, {
             "$project": {
                 "ip": '$_id',
-                'date': 1,
                 'count': 1
             }
     }, {
@@ -46,4 +45,4 @@ if __name__ == '__main__':
     }, {
             '$limit': 10
     }]):
-        print(row.get('ip'))
+        print('\t{}: {}'.format(row.get('ip'), row.get('count')))

@@ -9,10 +9,9 @@ The top must be ordered
 The average score must be part of each item returns
 with key = averageScore
 """
-from pymongo.collection import Collection, CommandCursor
 
 
-def top_students(mongo_collection: Collection) -> CommandCursor:
+def top_students(mongo_collection):
     """
     returns all students sorted by average score
     """

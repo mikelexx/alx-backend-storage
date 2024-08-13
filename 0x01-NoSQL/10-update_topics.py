@@ -8,11 +8,9 @@ name (string) will be the school name to update
 topics (list of strings) will be the list of topics
 approached in the school
 """
-from pymongo.collection import Collection
 
 
-def update_topics(mongo_collection: Collection, name: str,
-                  topics: str) -> None:
+def update_topics(mongo_collection, name, topics):
     """
     changes all  topics of a school document based on the name
     """

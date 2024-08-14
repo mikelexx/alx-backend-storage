@@ -31,8 +31,6 @@ def count_url_calls(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(url):
         key = f'count:{url}'
-        if not r.get(key):
-            r.set(key, 0)
         r.incr(key)
         cached_res = r.get(f'cached:{url}')
         if cached_res:

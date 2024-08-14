@@ -31,13 +31,13 @@ def count_url_calls(method: Callable) -> Callable:
     def wrapper(url):
         key = f'count:{url}'
         if not r.get(key):
-            r.setex(key, 10, 0)
+            r.set(key, 0)
         r.incr(key)
         cached_res = r.get(f'cached:{url}')
         print(r.get(key))
         if cached_res:
             return cached_res.decode('utf-8')
-        r.set(f'catched:{url}', method(url))
+        r.set(f'catched:{url}', 10, method(url))
 
     return wrapper
 

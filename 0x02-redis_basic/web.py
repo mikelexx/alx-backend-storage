@@ -36,7 +36,7 @@ def count_url_calls(method: Callable) -> Callable:
         if cached_res:
             return cached_res.decode('utf-8')
         res = method(url)
-        r.set(f'catched:{url}', 10, res)
+        r.set(f'cached:{url}', 10, res)
         return res
 
     return wrapper

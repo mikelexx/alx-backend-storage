@@ -1,0 +1,5 @@
+- Redis Crash Course Tutorial
+- Redis commands
+- Redis python client
+- How to Use Redis With Python
+- TODO -----> write documentation of tasks

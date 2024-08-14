@@ -48,8 +48,4 @@ def get_page(url: str) -> str:
     uses the requests module to obtain the HTML content of
     a particular URL and returns it.
     """
-    try:
-        return requests.get(url).text
-    except Exception as e:
-        print(f"error occured: {e}")
-        return str(e)
+    return requests.get(url).text

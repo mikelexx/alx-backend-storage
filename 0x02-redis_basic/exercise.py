@@ -16,7 +16,22 @@ be a str, bytes, int
 """
 import redis
 import uuid
+from functools import wraps
 from typing import Callable, Union, Any
+from collections import Counter
+
+
+def count_calls(method: Callable) -> Callable:
+    """
+    counts number of times the method is called
+    """
+
+    @wraps(method)
+    def increment(self, data):
+        self.incr(method.__qualname__)
+        return method(self, data)
+
+    return increment
 
 
 class Cache:
@@ -31,6 +46,13 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    def incr(self, key):
+        """
+        increments value of the key by 1 whenever called
+        """
+        self._redis.incr(key)
+
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         stores data provided in redis using a random key
@@ -63,12 +85,3 @@ class Cache:
         to integer type
         """
         return self.get(key, lambda x: int(x.decode('utf-8')))
-
-
-cache = Cache()
-
-TEST_CASES = {b"foo": None, 123: int, "bar": lambda d: d.decode("utf-8")}
-
-for value, fn in TEST_CASES.items():
-    key = cache.store(value)
-    assert cache.get(key, fn=fn) == value

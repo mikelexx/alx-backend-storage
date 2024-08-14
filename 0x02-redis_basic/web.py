@@ -18,6 +18,8 @@ import redis
 from functools import wraps
 from typing import Callable
 
+r = redis.Redis()
+
 
 def count_url_calls(method: Callable) -> Callable:
     """
@@ -25,7 +27,6 @@ def count_url_calls(method: Callable) -> Callable:
     the key "count:{url}" and cache
     the result with an expiration time of 10 seconds.
     """
-    r = redis.Redis()
 
     @wraps(method)
     def wrapper(url):

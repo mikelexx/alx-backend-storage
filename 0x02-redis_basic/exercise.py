@@ -17,8 +17,7 @@ be a str, bytes, int
 import redis
 import uuid
 from functools import wraps
-from typing import Callable, Union, Any
-from collections import Counter
+from typing import Callable, List, Union, Any
 
 
 def count_calls(method: Callable) -> Callable:
@@ -34,6 +33,24 @@ def count_calls(method: Callable) -> Callable:
     return increment
 
 
+def call_history(method: Callable) -> Callable:
+    """
+     stores the history of inputs and outputs for a particular function.
+    """
+
+    @wraps(method)
+    def wrapper(*args):
+        l_input = method.__qualname__ + ":inputs"
+        l_output = method.__qualname__ + ":outputs"
+        self = args[0]
+        self.rpush(l_input, str(args[1::]))
+        out = method(*args)
+        self.rpush(l_output, str(out))
+        return out
+
+    return wrapper
+
+
 class Cache:
     """
     basis for my redis client
@@ -46,12 +63,16 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    def rpush(self, list_name, *values):
+        self._redis.rpush(list_name, *values)
+
     def incr(self, key):
         """
         increments value of the key by 1 whenever called
         """
         self._redis.incr(key)
 
+    @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
